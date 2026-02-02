@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>G10 Solutions - Climatização e Construção</title>
+
+    <script src="https://unpkg.com/react@18/umd/react.production.min.js" crossorigin></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" crossorigin></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        :root { --blue: #1c648d; --orange: #ff6600; --gray: #f4f7f9; --dark: #1a1a1a; }
+        body { margin: 0; font-family: 'Poppins', sans-serif; background: var(--gray); color: #333; scroll-behavior: smooth; }
+        
+        .container { max-width: 1100px; margin: 0 auto; padding: 0 20px; }
+        
+        /* Header */
+        .header { background: white; padding: 15px 0; box-shadow: 0 2px 10px rgba(0,0,0,0.1); position: sticky; top: 0; z-index: 1000; }
+        .flex-header { display: flex; justify-content: center; align-items: center; }
+        .logo { height: 75px; border-radius: 5px; }
+
+        /* Hero */
+        .hero {
+            background: linear-gradient(rgba(0,0,0,0.75), rgba(0,0,0,0.75)), url('unnamed.jpg') center/cover;
+            color: white; padding: 100px 20px; text-align: center;
+        }
+        .hero h1 { font-size: 3.2rem; margin: 0; font-weight: 700; }
+        .hero p { font-size: 1.2rem; opacity: 0.9; }
+
+        /* Info Cards */
+        .info-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; margin-top: -50px; position: relative; z-index: 10; }
+        .info-card { background: white; padding: 25px; border-radius: 12px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); text-align: center; border-bottom: 5px solid var(--orange); }
+        .info-card i { font-size: 2.5rem; color: var(--blue); margin-bottom: 15px; }
+
+        /* Seção Sobre */
+        .about-section { padding: 80px 0; background: white; }
+        .about-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 50px; align-items: center; }
+        .about-content h2 { color: var(--blue); font-size: 2.2rem; margin-bottom: 20px; }
+        .about-content p { line-height: 1.8; color: #555; font-size: 1.05rem; }
+        .about-img img { width: 100%; border-radius: 20px; box-shadow: 0 15px 30px rgba(0,0,0,0.1); }
+
+        /* Carrossel de Serviços */
+        .service-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 25px; margin-top: 40px; }
+        .service-item { background: white; border-radius: 15px; overflow: hidden; box-shadow: 0 5px 15px rgba(0,0,0,0.05); transition: 0.3s; }
+        .service-item:hover { transform: translateY(-10px); }
+        .carousel-box { width: 100%; height: 230px; position: relative; overflow: hidden; }
+        .carousel-box img { width: 100%; height: 100%; object-fit: cover; position: absolute; top: 0; left: 0; transition: opacity 1s ease-in-out; }
+        .service-body { padding: 25px; }
+        .service-body h3 { color: var(--blue); margin-top: 0; }
+
+        /* Projetos */
+        .projects-section { padding: 80px 0; background: #fdfdfd; }
+        .projects-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 20px; margin-top: 40px; }
+        .project-card { position: relative; border-radius: 15px; overflow: hidden; height: 300px; cursor: pointer; }
+        .project-card img { width: 100%; height: 100%; object-fit: cover; transition: 0.5s; }
+        .project-overlay { 
+            position: absolute; bottom: 0; left: 0; width: 100%; padding: 20px; 
+            background: linear-gradient(transparent, rgba(28, 100, 141, 0.95)); 
+            color: white; transform: translateY(100%); transition: 0.4s ease; 
+        }
+        .project-card:hover .project-overlay { transform: translateY(0); }
+        .project-card:hover img { transform: scale(1.1); }
+
+        /* Contato */
+        .contact-box { background: var(--blue); color: white; padding: 60px 20px; border-radius: 25px; margin-top: 60px; text-align: center; }
+        textarea { width: 100%; max-width: 650px; height: 130px; margin: 20px 0; padding: 15px; border-radius: 10px; border: none; font-size: 1rem; font-family: inherit; }
+        .btn-zap { background: #25d366; color: white; padding: 18px 40px; border-radius: 50px; text-decoration: none; font-weight: bold; border: none; cursor: pointer; font-size: 1.1rem; display: inline-flex; align-items: center; gap: 10px; transition: 0.3s; }
+        .btn-zap:hover { background: #1eb954; transform: scale(1.05); }
+
+        /* Rodapé e Parceiros (Ajustado) */
+        .footer { background: var(--dark); color: white; text-align: center; padding: 60px 20px; margin-top: 80px; }
+        
+        .partner-section { margin-bottom: 50px; padding-bottom: 40px; border-bottom: 1px solid rgba(255,255,255,0.1); }
+        .partner-title { font-size: 1rem; opacity: 0.8; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 30px; color: var(--orange); font-weight: 600; }
+        .partner-grid { display: flex; justify-content: center; align-items: center; gap: 45px; flex-wrap: wrap; }
+        
+        .partner-grid img { 
+            height: 90px; /* Imagem maior */
+            width: auto;
+            background: white; /* Fundo para os logos JPG se destacarem */
+            padding: 10px;
+            border-radius: 10px;
+            transition: 0.4s; 
+            opacity: 1; /* Removido opacidade baixa */
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        }
+        .partner-grid img:hover { transform: scale(1.15); box-shadow: 0 6px 20px rgba(255,102,0,0.4); }
+
+        .footer-socials a { color: white; font-size: 32px; margin: 0 20px; transition: 0.3s; display: inline-block; }
+        .float-whatsapp { position: fixed; bottom: 30px; right: 30px; background: #25d366; color: white; width: 65px; height: 65px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 35px; box-shadow: 0 5px 20px rgba(0,0,0,0.3); z-index: 1000; text-decoration: none; }
+
+        @media (max-width: 768px) { 
+            .about-grid { grid-template-columns: 1fr; text-align: center; } 
+            .hero h1 { font-size: 2.2rem; } 
+            .partner-grid { gap: 20px; }
+            .partner-grid img { height: 65px; } /* Ajuste mobile */
+        }
+    </style>
+</head>
+<body>
+
+    <div id="root"></div>
+
+    <script type="text/babel">
+        const { useState, useEffect } = React;
+
+        const Carrossel = ({ imagens }) => {
+            const [indice, setIndice] = useState(0);
+            useEffect(() => {
+                const intervalo = setInterval(() => {
+                    setIndice((prev) => (prev === imagens.length - 1 ? 0 : prev + 1));
+                }, 3000);
+                return () => clearInterval(intervalo);
+            }, [imagens.length]);
+
+            return (
+                <div className="carousel-box">
+                    {imagens.map((img, i) => (
+                        <img key={i} src={img} style={{ opacity: i === indice ? 1 : 0 }} alt="Serviço G10" />
+                    ))}
+                </div>
+            );
+        };
+
+        function App() {
+            const [texto, setTexto] = useState("");
+            const enviarZap = () => {
+                window.open(`https://wa.me/5583986606652?text=${encodeURIComponent(texto)}`, '_blank');
+            };
+
+            const fotosClima = ["instacao.jpg", "limpezajpg.jpg"];
+            const fotosRefri = ["camera fria.jpg", "unnamed.jpg"];
+            const fotosChiller = ["chiller1.jpg", "chiller2.jpg"];
+            const fotosObras = ["obras.jpg", "projeto.jpg"];
+            const fotosHospitalar = ["hospital2.jpg", "hospital3.jpg"];
+            const fotosProjetos = ["projetos.jpg", "projetos2.jpg", "projetos3.jpg"];
+
+            return (
+                <div>
+                    <a href="https://wa.me/5583986606652" className="float-whatsapp" target="_blank">
+                        <i className="fab fa-whatsapp"></i>
+                    </a>
+
+                    <header className="header">
+                        <div className="container flex-header">
+                            <img src="logo 2.jpeg" alt="G10 Solutions Logo" className="logo" />
+                        </div>
+                    </header>
+
+                    <section className="hero">
+                        <div className="container">
+                            <h1>G10 Solutions</h1>
+                            <p>Sua parceira ideal em Climatização, Refrigeração e Engenharia Civil.</p>
+                        </div>
+                    </section>
+
+                    <main>
+                        <div className="container">
+                            <div className="info-row">
+                                <div className="info-card"><i className="fas fa-certificate"></i><h3>Profissionalismo</h3><p>Atendemos mais de 20 órgãos públicos com rigor técnico.</p></div>
+                                <div className="info-card"><i className="fas fa-truck-loading"></i><h3>Pronta Entrega</h3><p>Loja própria com materiais e peças originais.</p></div>
+                                <div className="info-card"><i className="fas fa-calendar-check"></i><h3>Compromisso</h3><p>Cronogramas respeitados e garantia total.</p></div>
+                            </div>
+                        </div>
+
+                        <section className="about-section">
+                            <div className="container about-grid">
+                                <div className="about-img"><img src="projeto.jpg" alt="Equipe G10" /></div>
+                                <div className="about-content">
+                                     <h2>Sobre a Empresa</h2>
+                                    <p>Com mais de <strong>6 anos de atuação</strong> no mercado da Paraíba, a <strong>G10 Solutions</strong> nasceu com o objetivo de oferecer soluções integradas e inteligentes para infraestrutura.</p>
+                                    <p>Somos especialistas em transformar ambientes através de uma climatização eficiente e construções sólidas. Nossa credibilidade é comprovada pela confiança de grandes instituições como o <strong>Ministério Público, Polícia Civil, Polícia Militar e o TRE-PB</strong>.
+.</p>
+                                    <p>Diferente de outras empresas, contamos com uma <strong>loja física completa</strong> de insumos e ferramentas, o que nos permite oferecer um preço mais competitivo e agilidade inigualável.</p>
+                                </div>
+                            </div>
+                        </section>
+
+                        <section className="container" style={{padding: '60px 0'}}>
+                            <h2 style={{textAlign: 'center', color: 'var(--blue)', fontSize: '2.2rem'}}>O Que Fazemos</h2>
+                            <div className="service-grid">
+                                <div className="service-item"><Carrossel imagens={fotosClima}/><div className="service-body"><h3>Climatização</h3><p>Instalação de splits e sistemas centrais.</p></div></div>
+                                <div className="service-item"><Carrossel imagens={fotosRefri}/><div className="service-body"><h3>Refrigeração</h3><p>Câmaras frias e balcões comerciais.</p></div></div>
+                                <div className="service-item"><Carrossel imagens={fotosChiller}/><div className="service-body"><h3>Sistemas Chiller</h3><p>Controle térmico industrial e hospitalar.</p></div></div>
+                                <div className="service-item"><Carrossel imagens={fotosHospitalar}/><div className="service-body"><h3>Manutenção Hospitalar</h3><p>Rigor técnico em equipamentos médicos.</p></div></div>
+                                <div className="service-item"><Carrossel imagens={fotosObras}/><div className="service-body"><h3>Construção Civil</h3><p>Reformas, casa, Prédio e repartição pública.</p></div></div>
+                                <div className="service-item"><Carrossel imagens={fotosProjetos}/><div className="service-body"><h3>Projetos</h3><p>Construção Civil, Elétrica e Arquitetura.</p></div></div>
+                            </div>
+                        </section>
+
+                        <section className="projects-section">
+                            <div className="container">
+                                <h2 style={{textAlign: 'center', color: 'var(--blue)', fontSize: '2.2rem'}}>Nossos Projetos Realizados</h2>
+                                <div className="projects-grid">
+                                    <div className="project-card"><img src="camerafria.jpg" alt="P1"/><div className="project-overlay"><h3>Câmaras Frias Industriais</h3><p>Instalação completa com controle digital.</p></div></div>
+                                    <div className="project-card"><img src="manutencao hoss.jpg" alt="P2"/><div className="project-overlay"><h3>Manutenção Hospitalar</h3><p>Suporte técnico em centros cirúrgicos.</p></div></div>
+                                    <div className="project-card"><img src="chiller9.jpg" alt="P3"/><div className="project-overlay"><h3>Sistemas de Grande Porte</h3><p>Implementação de Chillers.</p></div></div>
+                                    <div className="project-card"><img src="construcao civil10.jpg" alt="P4"/><div className="project-overlay"><h3>Reforma Estrutural</h3><p>Execução em órgãos públicos.</p></div></div>
+                                    <div className="project-card"><img src="condicionados.jpg" alt="P5"/><div className="project-overlay"><h3>Climatização Residencial</h3><p>Instalação premium Multi-Split.</p></div></div>
+                                    <div className="project-card"><img src="tecnico.jpg" alt="P6"/><div className="project-overlay"><h3>Projetos de Engenharia</h3><p>Consultoria técnica e elétrica.</p></div></div>
+                                </div>
+                            </div>
+                        </section>
+
+                        <div className="container">
+                            <div id="contato" className="contact-box">
+                                <h2>Vamos Iniciar seu Projeto?</h2>
+                                <textarea placeholder="Escreva aqui sua necessidade..." value={texto} onChange={(e) => setTexto(e.target.value)} /><br/>
+                                <button onClick={enviarZap} className="btn-zap">
+                                    <i className="fab fa-whatsapp"></i> CONVERSAR NO WHATSAPP
+                                </button>
+                            </div>
+
+                            <div style={{marginTop: '60px', background: 'white', padding: '30px', borderTop: '5px solid var(--blue)', borderRadius: '15px', textAlign: 'center'}}>
+                                <h3>Visite Nossa Unidade</h3>
+                                <p><i className="fas fa-map-marker-alt" style={{color: 'var(--orange)'}}></i> R. Ângela de Albuquerque Ramos, 91 A, Malvinas - Campina Grande/PB</p>
+                                <iframe style={{width: '100%', height: '400px', borderRadius: '15px', border: 'none', marginTop: '20px'}} src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3958.077259169623!2d-35.9189917!3d-7.2319835!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x7acc2f61e712361%3A0xcb3294c3c3937d57!2sR.%20%C3%82ngela%20de%20Albuquerque%20Ramos%2C%2091%20-%20Malvinas%2C%20Campina%20Grande%20-%20PB%2C%2058432-600!5e0!3m2!1spt-BR!2sbr!4v1700000000000" allowFullScreen="" loading="lazy"></iframe>
+                            </div>
+                        </div>
+                    </main>
+
+                   <footer className="footer">
+                        <div className="container">
+                            <div className="partner-section">
+                                <p className="partner-title">Órgãos Atendidos & Parceiros</p>
+                                <div className="partner-grid">
+                                    <img src="ministerio8.jpg" alt="Ministério Público" title="Ministério Público" />
+                                    <img src="policia civil.jpg" alt="Polícia Civil" title="Polícia Civil" />
+                                    <img src="policia militarl.jpg" alt="Polícia Militar" title="Polícia Militar" />
+                                    <img src="tre.2.jpg" alt="TRE-PB" title="TRE-PB" />
+                                </div>
+                            </div>
+
+                            <div className="footer-socials">
+                                <a href="https://www.instagram.com/g10_solucoes" target="_blank"><i className="fab fa-instagram"></i></a>
+                                <a href="https://www.facebook.com/gmanuntencoeseservicos" target="_blank"><i className="fab fa-facebook"></i></a>
+                            </div>
+                            <p style={{fontWeight: 'bold', marginTop: '20px'}}>G10 Solutions</p>
+                            <p>© 2025 — Excelência em Engenharia e Climatização</p>
+                        </div>
+                    </footer>
+                </div>
+            );
+        }
+
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+        root.render(<App />);
+    </script>
+</body>
+</html>
